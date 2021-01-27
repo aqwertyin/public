@@ -1,6 +1,83 @@
+	<link rel="manifest" href="manifest.json" />
+
+
 <h1>h1</h1>
 <h2>h2</h2>
 <h3>h3</h3>
 <h4>h4</h4>
 <h5>h5</h5>
 <h6>h6</h6>
+
+
+
+<div id="boxcontainer" class="box-container add-to">
+
+  <div class="inner-box">
+
+
+   <button style="font-size: 15px; padding: 4px 8px; background-color: white; border: none; outline: none;" class="add-to-btn">Add to Home screen</button>
+
+<hr />
+  <div class="close" style="font-size: 14px; padding: 4px 8px;; background-color: #fff;">Cancel</div>
+<br>
+
+
+  </div>
+
+</div>
+
+
+
+
+<script>
+
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  boxcontainer.style.display = "none";
+}
+
+</script>
+
+
+
+<script type="text/javascript">
+	if ('serviceWorker' in navigator) {
+	  window.addEventListener('load', function() {
+	    navigator.serviceWorker.register('sw.js').then(function(registration) {
+	      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+	    }, function(err) {
+	      console.log('ServiceWorker registration failed: ', err);
+	    });
+	  });
+	}
+
+	let deferredPrompt;
+	var div = document.querySelector('.add-to');
+	var button = document.querySelector('.add-to-btn');
+	div.style.display = 'none';
+
+	window.addEventListener('beforeinstallprompt', (e) => {
+	  e.preventDefault();
+	  deferredPrompt = e;
+	  div.style.display = 'block';
+
+	  button.addEventListener('click', (e) => {
+	  div.style.display = 'none';
+	  deferredPrompt.prompt();
+	  deferredPrompt.userChoice
+	    .then((choiceResult) => {
+	      if (choiceResult.outcome === 'accepted') {
+	        console.log('User accepted the A2HS prompt');
+	      } else {
+	        console.log('User dismissed the A2HS prompt');
+	      }
+	      deferredPrompt = null;
+	    });
+	});
+	});
+
+</script>
